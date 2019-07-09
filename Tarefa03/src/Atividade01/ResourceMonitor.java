@@ -11,6 +11,15 @@ package Atividade01;
  */
 public class ResourceMonitor {
     private CircularBuffer buffer;
+
+    public ResourceMonitor() {
+        Producer prod = new Producer(this);
+        Consumer con = new Consumer(this);
+        buffer = new CircularBuffer(10);
+        
+        prod.start();
+        con.start();
+    }
     
     public synchronized int remove() {
         int pos = -1;
@@ -36,12 +45,7 @@ public class ResourceMonitor {
         notifyAll();
     }
     
-    public void main() {
-        // TODO code application logic here
-        Producer prod = new Producer(this);
-        Consumer con = new Consumer(this);
-        
-        prod.start();
-        con.start();
+     public static void main(String[] args) {
+         new ResourceMonitor();
     }
 }

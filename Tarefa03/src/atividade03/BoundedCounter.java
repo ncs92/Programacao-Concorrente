@@ -13,6 +13,16 @@ public class BoundedCounter {
     int valueMin = 0;
     int valueMax = 1000;
     int value = 100;    
+    Producer prod;
+    Consumer cons;
+    
+    public BoundedCounter() {
+        prod = new Producer(this);
+        cons = new Consumer(this);
+        
+        prod.start();
+        cons.start();
+    }
     
     public synchronized boolean increment(){
         this.value++;
@@ -24,11 +34,7 @@ public class BoundedCounter {
         return (value == valueMin || value == valueMax);
     }
     
-    public void main() {
-        Producer prod = new Producer(this);
-        Consumer cons = new Consumer(this);
-        
-        prod.start();
-        cons.start();
+    public static void main(String[] args) {
+        new BoundedCounter();
     }
 }

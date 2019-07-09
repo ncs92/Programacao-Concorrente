@@ -11,9 +11,14 @@ package atividade02;
  */
 public class Counter {
     ThreadCounter tc;
-    int time = 500;
+    int time = 10;
     int value = 0;
-    
+
+    public Counter() {
+        tc = new ThreadCounter(this);
+        tc.start();
+    }
+  
     public synchronized void increment() {
         this.value++;
     }    
@@ -28,8 +33,7 @@ public class Counter {
         value = 0;
     }
     
-     public void main() {
-        tc = new ThreadCounter(this);
-        tc.start();
+     public static void main(String[] args) {
+         new Counter();
     }
 }

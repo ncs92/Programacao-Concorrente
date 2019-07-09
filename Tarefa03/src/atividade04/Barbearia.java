@@ -15,17 +15,19 @@ public class Barbearia {
     BarbeiroThread bt;
     ClientThread ct;
 
-    public Barbearia(BarbeiroThread bt, ClientThread ct) {
-        this.bt = bt;
-        this.ct = ct;
+    public Barbearia() {
+        this.bt = new BarbeiroThread(this);
+        this.ct = new ClientThread(this);
+        this.bt.start();
+        this.ct.start();
     }   
     
     public synchronized void removeClient() throws InterruptedException {
         while (totalClients <= 0) {
             this.bt.sleep(1000);
-            try {
-                wait();
+            try {                
                 System.out.println("Barbearia is empty...");
+                wait();
             } catch (InterruptedException e) {}
         }
         notifyAll();
@@ -36,15 +38,14 @@ public class Barbearia {
     public synchronized void insertClient() {
         while(totalClients <= totalChair) {
             try {
-                wait();
                 System.out.println("Barbearia is full...");
+                wait();
             } catch (InterruptedException e) {}
         }
         notifyAll();
     }
     
-    public void main() {
-        this.bt.start();
-        this.ct.start();
+    public static void main(String[] args) {
+        new Barbearia();
     }
 }
